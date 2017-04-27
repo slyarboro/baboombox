@@ -74,6 +74,14 @@ var setCurrentAlbum = function(album) {
     }
 };
 
+// checkpoint 26 => the console output will show moused-over elements fire event which eventually registers with the table's event listener
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+
 window.onload = function() {
     setCurrentAlbum(albumBenFolds);
+
+    songListContainer.addEventListener('mouseover', function(event) {
+      // target(prop) on event(obj) stores DOM element where event occurred, like so --
+      console.log(event.target);
+    });
 };
