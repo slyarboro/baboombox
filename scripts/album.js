@@ -3,7 +3,7 @@ var albumBenFolds = {
   artist: 'Ben Folds Five',
   label: '550 Music',
   year: '1997',
-  albumArtUrl: 'assets/images/album_covers/01.png',
+  albumArtUrl: 'assets/images/album_covers/04.png',
   songs: [
     {title: 'Brick', duration: '4:53'},
     {title: 'Battle of Who Could Care Less)', duration: '3:16'},
@@ -36,7 +36,7 @@ var createSongRow = function(songNumber, songName, songLength) {
   var template =
     '<tr class="album-view-song-item">'
    + '   <td class="song-item-number">' + songNumber + '</td>'
-   + '   <td class="song-item-number">' + songName + '</td>'
+   + '   <td class="song-item-title">' + songName + '</td>'
    + '   <td class="song-item-duration">' + songLength + '</td>'
    + '</tr>'
    ;

@@ -3,7 +3,7 @@ var collectionItemTemplate =
    + '  <img src="assets/images/album_covers/01.png"/>'
    + '  <div class="collection-album-info caption">'
    + '    <p>'
-   + '      <a class="album-name" href="album.html"> Whatever and Ever Amen </a>'
+   + '      <a class="album-title" href="album.html"> Whatever and Ever Amen </a>'
    + '      <br/>'
    + '      <a href="album.html"> Ben Folds Five </a>'
    + '      <br/>'
@@ -22,4 +22,4 @@ window.onload = function() {
      for (var i = 0; i < 12; i++) {
        collectionContainer.innerHTML += collectionItemTemplate;
      }
-}
+};
