@@ -74,16 +74,25 @@ var setCurrentAlbum = function(album) {
     }
 };
 
-// checkpoint 27 => in regards to 4 relationships of clicked element to table cell song number (only child play icons & num itself acquirable via in-DOM functions) => findParentByClassName function traverses DOM upward until respective parent (per class name) found
+
 var findParentByClassName = function(element, targetClass) {
-  if (element) {
-    var thisParent = element.parentElement;
-    while (thisParent.className != targetClass) {
+    if (element.parentElement === null) {
+      // element, you are not the father
+      alert("No parent found");
+    } else {
+      var thisParent = element.parentElement;
+      while (thisParent.className !== targetClass && thisParent.className !== null) {
         thisParent = thisParent.parentElement;
+      }
+
+      if (thisParent.className === null) {
+        // elements with given class name, none of you are the father
+        alert("No parent found with that class name");
+      } else {
+        return thisParent;
+      }
     }
-    return thisParent;
-  }
-};
+  };
 
 // checkpoint 27 => *getSongItem* should take element, based on element's class, should use *switch* statement returning element with *song-item-number* class
 var getSongItem = function(element) {
