@@ -8,6 +8,7 @@
          <link rel="stylesheet" type="text/css" href="styles/normalize.css">
          <link rel="stylesheet" type="text/css" href="styles/main.css">
          <link rel="stylesheet" type="text/css" href="styles/album.css">
+         <link rel="stylesheet" type="text/css" href="styles/player_bar.css">
      </head>
 
      <body class="album">
@@ -35,6 +36,34 @@
                 <!-- removed static elements -->
             </table>
         </main>
+
+        <!-- checkpoint 28 -->
+        <!-- control groups => main-controls: play/pause previous/next buttons; currently-playing: displays song info and play progress; volume: volume control slider -->
+        <section class="player-bar">
+          <div class="container">
+            <div class="control-group main-controls">
+
+              <!-- including previous/next and play/pause buttons in main controls -->
+              <!-- display icons => span tags represent buttons -->
+              <!-- e.g. play/pause button initialized with "play" icon -->
+              <a class="previous">
+                <span class="ion-skip-backward"></span>
+              </a>
+              <a class="play-pause">
+                <span class="ion-play"></span>
+              </a>
+              <a class="next">
+                <span class="ion-skip-forward"></span>
+              </a>
+
+            </div>
+            <div class="control-group currently-playing">
+            </div>
+            <div class="control-group volume">
+            </div>
+          </div>
+        </section>
+
         <script src="scripts/album.js"></script>
      </body>
  </html>
