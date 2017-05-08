@@ -1,7 +1,7 @@
 var albumBenFolds = {
     title: 'Whatever and Ever Amen',
     artist: 'Ben Folds Five',
-    label: '550 Music',
+    label: '| 550 Music',
     year: '1997',
     albumArtUrl: 'assets/images/album_covers/04.png',
     songs: [
