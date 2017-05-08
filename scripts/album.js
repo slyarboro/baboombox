@@ -6,7 +6,7 @@ var albumBenFolds = {
     albumArtUrl: 'assets/images/album_covers/04.png',
     songs: [
       {title: 'Brick', duration: '4:53'},
-      {title: 'Battle of Who Could Care Less)', duration: '3:16'},
+      {title: 'Battle of Who Could Care Less', duration: '3:16'},
       {title: 'Kate', duration: '3:13'},
       {title: 'One Angry Dwarf And 200 Solemn Faces', duration: '3:52'},
       {title: 'Steven\'s Last Night In Town', duration: '3:27'},
