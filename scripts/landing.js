@@ -1,40 +1,47 @@
-var pointsArray = document.getElementsByClassName('point');
+// remove DOM selector
+var animatePoints = function() {
+  var revealPoint = function() {
 
-    var animatePoints = function(points) {
-      var revealPoint = function(i) {
-         points[i].style.opacity = 1;
-         points[i].style.transform = "scaleX(1) translateY(0)";
-         points[i].style.msTransform = "scaleX(1) translateY(0)";
-         points[i].style.WebkitTransform = "scaleX(1) translateY(0)";
-      };
-
-      for (var i = 0; i < points.length; i++) {
-        revealPoint(i);
-      }
-
-    };
-
-  // adding $() to convert all instances of *window* into jQuery object
-  $(window).load(function() {
-    
-    //  updating *.innerHeight* property to jQuery *height()* method (which gets or sets object height)
-    // since no arguments are passed to function, will *get* the height
-    if ($(window).height() > 950) {
-      animatePoints();
-    }
-
-    // now that jQuery can select element with fewer characters, there is no need for a separate variable to hold the *.selling-points* element
-    // replacing *getBoundingClientRect()* with the jQuery *.offset()* method
-    var scrollDistance = $('.selling-points').offset().top - $(window).height() + 200;
-
-    // *addEventListener()* method change to jQuery *scroll()* method (so function can be taken as argument)
-    // jQuery *scroll()* "method" still event handler (like *addEventListener()*), but jQuery wrapper obscures the appearance of events
-    // function will execute when the indow scrolls
-    $(window).scroll(function(event) {
-
-      // lengthy *document.documentElement..* replaced with concise jQuery equivalent => $(window).scrollTop()
-      if ($(window).scrollTop() >= scrollDistance) {
-        animatePoints();
-      }
+    // with concise *.point* selection, a variable (previously used to store element) is no longer necessary
+    // style property instances replaced with jQuery *css()* method
+    // vendor prefixes (on *transform* property) no longer necessary given jQuery's cross-browser compatibility
+    // each time jQuery executes *revealPoint()* callback, $(this) will reference a different .point element
+    $(this).css({
+      opacity: 1,
+      transform: 'scaleX(1) translateY(0)'
     });
+  };
+
+    // revealPoint function no longer requires argument; now refers to $(this) rather than a specfic .point element
+    // to use *this* with jQuery, must wrap it in jQuery object
+    // for loop replaced with jQuery $.each() function // function iterates over each .point element, executing the callback function *revealPoint*
+    $.each($('.point'), revealPoint);
+};
+
+
+// adding $() to convert all instances of *window* into jQuery object
+$(window).load(function() {
+
+  //  updating *.innerHeight* property to jQuery *height()* method (which gets or sets object height)
+  // since no arguments are passed to function, will *get* the height
+  if ($(window).height() > 950) {
+    animatePoints();
+  }
+
+  // making selection process more efficient, jQuery negates previous need to store *.selling-points* element in a variable
+  // replacing *getBoundingClientRect()* with the jQuery *.offset()* method
+  var scrollDistance = $('.selling-points').offset().top - $(window).height() + 200;
+
+  // *addEventListener()* method changed to jQuery *scroll()* method (function can now be taken as argument)
+  // jQuery *scroll()* "method" is still event handler, but jQuery wrapper obscures appearance of events
+  // function will execute when the indow scrolls
+  $(window).scroll(function(event) {
+
+    // lengthy *document.documentElement..* replaced with concise jQuery equivalent => $(window).scrollTop()
+    if ($(window).scrollTop() >= scrollDistance) {
+      animatePoints();
+
+      // *pointsArray* argument removed from *animatePoints()* during *window.onload* update
+    }
   });
+});
