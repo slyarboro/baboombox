@@ -14,19 +14,27 @@ var pointsArray = document.getElementsByClassName('point');
 
     };
 
-  window.onload = function() {
-    //  animate points automatically on tall screens where trigger-scroll defunct
-    if (window.innerHeight > 950) {
-      animatePoints(pointsArray);
+  // adding $() to convert all instances of *window* into jQuery object
+  $(window).load(function() {
+    
+    //  updating *.innerHeight* property to jQuery *height()* method (which gets or sets object height)
+    // since no arguments are passed to function, will *get* the height
+    if ($(window).height() > 950) {
+      animatePoints();
     }
 
-    var sellingPoints = document.getElementsByClassName('selling-points')[0];
-    var scrollDistance = sellingPoints.getBoundingClientRect().top - window.innerHeight + 200;
+    // now that jQuery can select element with fewer characters, there is no need for a separate variable to hold the *.selling-points* element
+    // replacing *getBoundingClientRect()* with the jQuery *.offset()* method
+    var scrollDistance = $('.selling-points').offset().top - $(window).height() + 200;
 
-    window.addEventListener("scroll", function(event) {
-      if (document.documentElement.scrollTop || document.body.scrollTop >= scrollDistance) {
-        animatePoints(pointsArray);
+    // *addEventListener()* method change to jQuery *scroll()* method (so function can be taken as argument)
+    // jQuery *scroll()* "method" still event handler (like *addEventListener()*), but jQuery wrapper obscures the appearance of events
+    // function will execute when the indow scrolls
+    $(window).scroll(function(event) {
+
+      // lengthy *document.documentElement..* replaced with concise jQuery equivalent => $(window).scrollTop()
+      if ($(window).scrollTop() >= scrollDistance) {
+        animatePoints();
       }
     });
-
-  }
+  });
