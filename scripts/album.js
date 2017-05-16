@@ -41,7 +41,57 @@ var createSongRow = function(songNumber, songName, songLength) {
      + '</tr>'
      ;
 
-     return $(template);
+     // checkpoint 31
+     // replace return statement with its jQuery equivalent
+     // attach the three event listeners provided in checkpoint
+     var $row = $(template);
+
+     var clickHandler = function() {
+       var songNumber = $(this).attr('data-song-number');
+
+       if (currentlyPlayingSong !== null) {
+         var songRequest = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
+         songRequest.html(currentlyPlayingSong);
+       }
+
+       if (currentlyPlayingSong !== songNumber) {
+         $(this).html(pauseButtonTemplate);
+         currentlyPlayingSong = songNumber;
+       }  else if (currentlyPlayingSong === songNumber) {
+         $(this).html(playButtonTemplate);
+         currentlyPlayingSong = null;
+       }
+     };
+
+     var onHover = function(event) {
+       var songRequest = $(this).find('.song-item-number');
+       var songNumber = songRequest.attr('data-song-number');
+
+       if (songNumber !== currentlyPlayingSong) {
+         songRequest.html(playButtonTemplate);
+       }
+     };
+
+     var offHover = function(event) {
+       var songRequest = $(this).find('.song-item-number');
+       var songNumber = songRequest.attr('data-song-number');
+
+       if(songNumber !== currentlyPlayingSong) {
+         songRequest.html(songNumber);
+       }
+     };
+
+     // call find() for element; song number (class) of row clicked
+     // *click* event listener executes (callback) once target is clicked
+     $row.find('.song-item-number').click(clickHandler);
+
+     // hover() event listener combines mouseover/mouseleave functions
+     // first argument: executes as user hovers/mouses over *row*(element)
+     // second argument: executes once mouse leaves respective row
+     $row.hover(onHover, offHover);
+
+     // the $row created returns with event listeners attached
+     return $row;
 };
 
 // create setCurrentAlbum function for program to call once window loads
@@ -78,60 +128,6 @@ var setCurrentAlbum = function(album) {
     }
 };
 
-// checkpoint 27 => in regards to 4 relationships of clicked element to table cell song number (only child play icons & num itself acquirable via in-DOM functions) => findParentByClassName function traverses DOM upward until respective parent (per class name) found
-var findParentByClassName = function(element, targetClass) {
-  if (element) {
-    var thisParent = element.parentElement;
-    while (thisParent.className != targetClass) {
-        thisParent = thisParent.parentElement;
-    }
-    return thisParent;
-  }
-};
-
-// checkpoint 27 => *getSongItem* should take element, based on element's class, should use *switch* statement returning element with *song-item-number* class
-var getSongItem = function(element) {
-    switch (element.className) {
-      case 'album-song-button':
-      case 'ion-play':
-      case 'ion-pause':
-        return findParentByClassName(element, 'song-item-number');
-      case 'album-view-song-item':
-        return element.querySelector('.song-item-number');
-      case 'song-item-title':
-      case 'song-item-duration':
-        return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
-      case 'song-item-number':
-        return element;
-      default:
-        return;
-      }
-};
-
-//  checkpoint 27 => create click handler function that takes one target element argument
-// store item number element using getSongItem function
-var clickHandler = function(targetElement) {
-  var songItem = getSongItem(targetElement);
-
-    // create conditional that checks if currentlyPlayingSong is null and/or currently active => should set songItem content acccordingly (whether play or pause or item number default)
-    if (currentlyPlayingSong === null) {
-      songItem.innerHTML = pauseButtonTemplate;
-      currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
-      songItem.innerHTML = playButtonTemplate;
-      currentlyPlayingSong = null;
-    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
-      var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
-      currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
-      songItem.innerHTML = pauseButtonTemplate;
-      currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    }
-};
-
-// checkpoint 26 => the console output will show moused-over elements fire event which eventually registers with the table's event listener
-var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
-var songRows = document.getElementsByClassName('album-view-song-item');
-
 // Album button templates
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
@@ -139,48 +135,7 @@ var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause">
 // state of playing song; set to null so there is no song identified as playing until a click registers song selection, changing value of currentlyPlayingSong
 var currentlyPlayingSong = null;
 
-window.onload = function() {
+$(document).ready(function() {
     setCurrentAlbum(albumBenFolds);
 
-    songListContainer.addEventListener('mouseover', function(event) {
-
-      // checkpoint 27 => update mouseover event with conditional that only changes innerHTML of table cell when element does not belong to currently playing song
-      // only target individual song during event delegation; i.e. action only possible one table row/song at a time
-      if (event.target.parentElement.className === 'album-view-song-item') {
-
-        // play button HTML replaces item number of current song
-        event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
-
-        // pause button remains active as long as respective song is playing
-        var songItem = getSongItem(event.target);
-
-        if (songItem.getAttribute('data-song-number') === currentlyPlayingSong) {
-          songItem.innerHTML = pauseButtonTemplate;
-        }
-        // if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
-        //   songItem.innerHTML = playButtonTemplate;
-        // }
-      }
-    });
-
-    // checkpoint 27 => used this.children[0] to change HTML of table cell; now helper getSongItem() function manages/specifies element for us
-    // must update mouseleave listener => removing this.children[0] references, adding conditional to ensure row exit does not affect/interrupt/prematurely stop song currently playing
-    for (var i = 0; i < songRows.length; i++) {
-      songRows[i].addEventListener('mouseleave', function(event) {
-
-        // cache song item in variable; (preventing redundancy) for better performance; likewise with song number
-        var songItem = getSongItem(event.target);
-        var songItemNumber = songItem.getAttribute('data-song-number');
-
-        // conditional added to ensure mouseleave doesn't affect song currently being played
-        if (songItemNumber !== currentlyPlayingSong) {
-          songItem.innerHTML = songItemNumber;
-        }
-      });
-
-      // checkpoint 27; add event listener for 'click' event; enabling value change of song currently playing
-      songRows[i].addEventListener('click', function(event) {
-        clickHandler(event.target);
-      });
-    }
-};
+});
