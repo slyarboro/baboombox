@@ -1,37 +1,3 @@
-var albumBenFolds = {
-    title: 'Whatever and Ever Amen',
-    artist: 'Ben Folds Five',
-    label: '| 550 Music',
-    year: '1997',
-    albumArtUrl: 'assets/images/album_covers/04.png',
-    songs: [
-      {title: 'Brick', duration: '4:53'},
-      {title: 'Battle of Who Could Care Less', duration: '3:16'},
-      {title: 'Kate', duration: '3:13'},
-      {title: 'One Angry Dwarf And 200 Solemn Faces', duration: '3:52'},
-      {title: 'Steven\'s Last Night In Town', duration: '3:27'},
-    ]
-};
-
-var albumMarconi = {
-    title: 'The Telephone',
-    artist: 'Guglielmo Marconi',
-    label: 'EM',
-    year: '1909',
-    albumArtUrl: 'assets/images/album_covers/20.png',
-    songs: [
-      {title: 'Hello, Operator?', duration: '1:01'},
-      {title: 'Ring, ring, ring', duration: '5:01'},
-      {title: 'Fits in your pocket', duration: '3:21'},
-      {title: 'Can you hear me now?', duration: '3:14'},
-      {title: 'Wrong phone number', duration: '2:15'},
-    ]
-};
-
-// must declare objects beforehand since createSongRow function uses the information stored in those album objects
-// createSongRow assigns previously static song row template to *template*(variable) and returns it
-// rather than statically declaring number/name/length, function takes them as arguments => populating song row tempate accordingly
-
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
       '<tr class="album-view-song-item">'
@@ -49,17 +15,19 @@ var createSongRow = function(songNumber, songName, songLength) {
      var clickHandler = function() {
        var songNumber = $(this).attr('data-song-number');
 
-       if (currentlyPlayingSong !== null) {
-         var songRequest = $('.song-item-number[data-song-number="' + currentlyPlayingSong + '"]');
-         songRequest.html(currentlyPlayingSong);
+       if (currentlyPlayingSongNumber !== null) {
+         var songRequest = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+         songRequest.html(currentlyPlayingSongNumber);
        }
 
-       if (currentlyPlayingSong !== songNumber) {
+       if (currentlyPlayingSongNumber !== songNumber) {
          $(this).html(pauseButtonTemplate);
-         currentlyPlayingSong = songNumber;
-       }  else if (currentlyPlayingSong === songNumber) {
+         currentlyPlayingSongNumber = songNumber;
+         currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+       }  else if (currentlyPlayingSongNumber === songNumber) {
          $(this).html(playButtonTemplate);
-         currentlyPlayingSong = null;
+         currentlyPlayingSongNumber = null;
+         currentSongFromAlbum = null;
        }
      };
 
@@ -67,7 +35,7 @@ var createSongRow = function(songNumber, songName, songLength) {
        var songRequest = $(this).find('.song-item-number');
        var songNumber = songRequest.attr('data-song-number');
 
-       if (songNumber !== currentlyPlayingSong) {
+       if (songNumber !== currentlyPlayingSongNumber) {
          songRequest.html(playButtonTemplate);
        }
      };
@@ -76,27 +44,24 @@ var createSongRow = function(songNumber, songName, songLength) {
        var songRequest = $(this).find('.song-item-number');
        var songNumber = songRequest.attr('data-song-number');
 
-       if(songNumber !== currentlyPlayingSong) {
+       if(songNumber !== currentlyPlayingSongNumber) {
          songRequest.html(songNumber);
        }
      };
 
-     // call find() for element; song number (class) of row clicked
-     // *click* event listener executes (callback) once target is clicked
      $row.find('.song-item-number').click(clickHandler);
 
-     // hover() event listener combines mouseover/mouseleave functions
-     // first argument: executes as user hovers/mouses over *row*(element)
-     // second argument: executes once mouse leaves respective row
+     // hover() event listener combines mouseover/mouseleave
+     // execute: arg#1, user hovers over row; arg#2, user/cursor "mouses out" of row
      $row.hover(onHover, offHover);
 
      // the $row created returns with event listeners attached
      return $row;
 };
 
-// create setCurrentAlbum function for program to call once window loads
 // will take album object as argument, using object's stored information by plugging into template
 var setCurrentAlbum = function(album) {
+    currentAlbum = album;
 
     // select all HTML elements required to display on album page
     // assign corresponding values (album objects' properties) to HTML elements, populating elements with information
@@ -107,9 +72,6 @@ var setCurrentAlbum = function(album) {
     var $albumSongList = $('.album-view-song-list');
 
 
-    // checkpoint 30
-    // instead of setting firstChild.nodeValue => call jQuery's text() method to set content of text nodes
-    // replace setAttribute() method with => jQuery's attr() method (changes element attribute using same arguments)
     $albumTitle.text(album.title);
     $albumArtist.text(album.artist);
     $albumReleaseInfo.text(album.year + ' ' + album.label);
@@ -117,11 +79,8 @@ var setCurrentAlbum = function(album) {
 
     // when jQuery selector returns single element, can access it without array-index syntax
     // can call jQuery method directly on selector without recovering first (read: only) item in array
-
-    // refactor using jQuery methods => .empty() remove child nodes; .append() insert content to end of element(s)
     $albumSongList.empty();
 
-    // can call jQuery method directly on selector without recovering first (read: only) item in array
     for (var i = 0; i < album.songs.length; i++) {
       var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
       $albumSongList.append($newRow);
@@ -132,8 +91,15 @@ var setCurrentAlbum = function(album) {
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 
-// state of playing song; set to null so there is no song identified as playing until a click registers song selection, changing value of currentlyPlayingSong
-var currentlyPlayingSong = null;
+// now have set of variables in global scope that hold current song and album information
+// data contributions necessary for proper song tracking and functionalities of the sort
+
+// follow up by assigning variable to the *album* argument in setCurrentAlbum() function
+var currentAlbum = null;
+
+// currentlyPlayingSong renamed to a more specific *var currentlyPlayingSongNumber* => same, tracking current song info; set to null to indicate no song play => value changes once click of a song selection has registered
+var currentlyPlayingSongNumber = null;
+var currentSongFromAlbum = null;
 
 $(document).ready(function() {
     setCurrentAlbum(albumBenFolds);
