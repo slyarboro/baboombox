@@ -79,7 +79,7 @@ var setCurrentAlbum = function(album) {
     $albumSongList.append($newRow);
   }
 };
-
+//.
 var updatePlayerBarSong = function() {
   $('.currently-playing .song-name').text(currentSongFromAlbum.title);
   $('.currently-playing .artist-name').text(currentAlbum.artist);
@@ -109,6 +109,7 @@ var nextSong = function() {
   currentlyPlayingSongNumber = nowPlayingIndex + 1;
   currentSongFromAlbum = currentAlbum.songs[nowPlayingIndex];
 
+  //
   updatePlayerBarSong();
 
   var lastSongNumber = getLastSongNumber(nowPlayingIndex);
@@ -134,6 +135,7 @@ var previousSong = function() {
   currentlyPlayingSongNumber = nowPlayingIndex + 1;
   currentSongFromAlbum = currentAlbum.songs[nowPlayingIndex];
 
+  //
   updatePlayerBarSong();
 
   $('.currently-playing .song-name').text(currentSongFromAlbum.title);
@@ -148,7 +150,7 @@ var previousSong = function() {
   $previousSongNumberCell.html(pauseButtonTemplate);
   $lastSongNumberCell.html(lastSongNumber);
 };
-
+//.
 var updatePlayerBarSong = function() {
   $('.currently-playing .song-name').text(currentSongFromAlbum.title);
   $('.currently-playing .artist-name').text(currentAlbum.artist);
@@ -175,3 +177,9 @@ $(document).ready(function() {
   $previousButton.click(previousSong);
   $nextButton.click(nextSong);
 });
+
+
+// Law & Order: UPBS
+// Updating Player Bar Song
+//
+// dun dun
