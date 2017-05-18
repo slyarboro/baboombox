@@ -12,12 +12,12 @@
      </head>
 
      <body class="album">
-         <nav class="navbar"> <!-- nav bar -->
+         <nav class="navbar">
              <a href="index.html"  class="logo">
                  <img src="assets/images/bloc_jams_logo.png" alt="bloc jams logo">
              </a>
              <div class="links-container">
-                 <a href="collection.html" class="navbar-link">collection</a>
+                 <a href="collection.html" class="navbar-link">Collection</a>
              </div>
          </nav>
 
@@ -33,19 +33,12 @@
                 </div>
             </section>
             <table class="album-view-song-list">
-                <!-- removed static elements -->
             </table>
         </main>
 
-        <!-- checkpoint 28 -->
-        <!-- control groups => main-controls: play/pause previous/next buttons; currently-playing: displays song info and play progress; volume: volume control slider -->
         <section class="player-bar">
           <div class="container">
             <div class="control-group main-controls">
-
-              <!-- including previous/next and play/pause buttons in main controls -->
-              <!-- display icons => span tags represent buttons -->
-              <!-- e.g. play/pause button initialized with "play" icon -->
               <a class="previous">
                 <span class="ion-skip-backward"></span>
               </a>
@@ -59,12 +52,12 @@
 
             <div class="control-group currently-playing">
 
-              <!-- song details display; center of player  -->
-              <!-- each has heading tag, class name, placeholder info; *.artist-song-mobile* consolidates song info to single line, more compact, element for mobile display -->
+              <!-- *.artist-song-mobile* consolidates song info to single line -->
               <h2 class="song-name"></h2>
+              <h2 class="artist-song-mobile"></h2>
+              <h3 class="artist-name"></h3>
 
-              <!-- user can jump to anywhere in song with seek bar in *currently-playing* group -->
-              <!-- seek bar displays duration and playback time; *fill* class displays current song progress; *.fill* increases to full width 100% when song is complete; *.thumb* visual marker for .fill element, can drag/drop -->
+              <!-- *fill* displays song progress; *.thumb* visual marker -->
               <div class="seek-control">
                   <div class="seek-bar">
                     <div class="fill"</div>
@@ -73,13 +66,10 @@
                   <div class="current-time">2:30</div>
                   <div class="total-time">4:45</div>
               </div>
-
-              <h2 class="artist-song-mobile"></h2>
-              <h3 class="artist-name"></h3>
             </div>
 
             <div class="control-group volume">
-              <!-- user able to adjust volume/regulate sound via volume icon within player bar; specs provided in player bar stylesheet-->
+              <!-- user adjusts volume with icon per player bar stylesheet-->
               <span class="ion-volume-high icon"></span>
               <div class="seek-bar">
                 <div class="fill"></div>
@@ -88,7 +78,7 @@
             </div>
           </div>
         </section>
-        <!-- link to/for jQuery library -->
+
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script src="scripts/fixtures.js"></script>
         <script src="scripts/album.js"></script>
