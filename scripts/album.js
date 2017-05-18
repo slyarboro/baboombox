@@ -1,3 +1,17 @@
+// Assignment 32
+// Create a setSong function that takes one argument, songNumber, and assigns currentlyPlayingSongNumber and currentSongFromAlbum a new value based on the new song number.
+var setSong = function(songNumber) {
+  currentlyPlayingSongNumber = parsInt(songNumber);
+  currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+};
+// Replace all instances where we manually assign values to these functions with a call to setSong().
+
+// Write a function named getSongNumberCell that takes one argument, number, and returns the song number element that corresponds to that song number.
+var getSongNumberCell = function(number) {
+  return $('.song-item-number[data-song-number="' + number + '"]')
+};
+// Replace all instances where we use the selector with a getSongNumberCell() call.
+
 var createSongRow = function(songNumber, songName, songLength) {
   var template =
   '<tr class="album-view-song-item">'
@@ -13,20 +27,19 @@ var createSongRow = function(songNumber, songName, songLength) {
     var songNumber = parseInt($(this).attr('data-song-number'));
 
     if (currentlyPlayingSongNumber !== null) {
-      var nowPlaying = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
+      var nowPlaying = getSongNumberCell(currentlyPlayingSongNumber);
       nowPlaying.html(currentlyPlayingSongNumber);
     }
 
     if (currentlyPlayingSongNumber !== songNumber) {
       $(this).html(pauseButtonTemplate);
-      currentlyPlayingSongNumber = songNumber;
+      setSong(songNumber);
       currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
       updatePlayerBarSong();
     }  else if (currentlyPlayingSongNumber === songNumber) {
       $(this).html(playButtonTemplate);
       $('.main-controls .play-pause').html(playerBarPlayButton);
-      currentlyPlayingSongNumber = null;
-      currentSongFromAlbum = null;
+      setSong(null);
     }
   };
 
@@ -54,6 +67,7 @@ var createSongRow = function(songNumber, songName, songLength) {
   $row.hover(onHover, offHover);
   return $row;
 };
+
 
 // taking album/object as argument, its info can be plugged into template
 var setCurrentAlbum = function(album) {
@@ -106,15 +120,14 @@ var nextSong = function() {
   }
 
   var lastSongNumber = currentlyPlayingSongNumber;
-  currentlyPlayingSongNumber = nowPlayingIndex + 1;
-  currentSongFromAlbum = currentAlbum.songs[nowPlayingIndex];
+  setSong(nowPlayingIndex + 1);
 
   //
   updatePlayerBarSong();
 
   var lastSongNumber = getLastSongNumber(nowPlayingIndex);
-  var $nextSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-  var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+  var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+  var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
 
   $nextSongNumberCell.html(pauseButtonTemplate);
   $lastSongNumberCell.html(lastSongNumber);
@@ -132,8 +145,7 @@ var previousSong = function() {
     return index == (currentAlbum.songs.length - 1) ? 1 : index + 2;
   };
 
-  currentlyPlayingSongNumber = nowPlayingIndex + 1;
-  currentSongFromAlbum = currentAlbum.songs[nowPlayingIndex];
+  setSong(nowPlayingIndex + 1);
 
   //
   updatePlayerBarSong();
@@ -144,8 +156,8 @@ var previousSong = function() {
   $('.main-controls .play-pause').html(playerBarPauseButton);
 
   var lastSongNumber = getLastSongNumber(nowPlayingIndex);
-  var $previousSongNumberCell = $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
-  var $lastSongNumberCell = $('.song-item-number[data-song-number="' + lastSongNumber + '"]');
+  var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+  var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
 
   $previousSongNumberCell.html(pauseButtonTemplate);
   $lastSongNumberCell.html(lastSongNumber);
@@ -177,9 +189,3 @@ $(document).ready(function() {
   $previousButton.click(previousSong);
   $nextButton.click(nextSong);
 });
-
-
-// Law & Order: UPBS
-// Updating Player Bar Song
-//
-// dun dun
