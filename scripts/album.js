@@ -164,7 +164,9 @@ var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
 $(document).ready(function() {
-    setCurrentAlbum(albumPicasso);
+    // setCurrentAlbum(albumPicasso);
+    setCurrentAlbum(albumBenFolds);
+    // setCurrentAlbum(albumMarconi);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
 });
