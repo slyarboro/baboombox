@@ -1,11 +1,3 @@
-//
-// YO
-// STEPHANIE
-// play to pause, pause to play???? hashtag toggle
-// paste assignment to double check if complete before submit
-//
-
-// Assignment 32 (getSongNumberCell)
 var getSongNumberCell = function(number) {
   return $('.song-item-number[data-song-number="' + number + '"]');
 };
@@ -82,7 +74,7 @@ var setCurrentAlbum = function(album) {
   var $albumImage = $('.album-cover-art');
   var $albumSongList = $('.album-view-song-list');
 
-  $albumTitle.text(album.title);
+  $albumTitle.text(album.name);
   $albumArtist.text(album.artist);
   $albumReleaseInfo.text(album.year + ' ' + album.label);
   $albumImage.attr('src', album.albumArtUrl);
@@ -90,22 +82,21 @@ var setCurrentAlbum = function(album) {
   $albumSongList.empty();
 
   for (var i = 0; i < album.songs.length; i++) {
-    var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+    var $newRow = createSongRow(i + 1, album.songs[i].name, album.songs[i].length);
     $albumSongList.append($newRow);
   }
+};
+
+var updatePlayerBarSong = function() {
+  $('.currently-playing .song-name').text(currentSongFromAlbum.name);
+  $('.currently-playing .artist-name').text(currentAlbum.artist);
+  $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.name + " - " + currentAlbum.artist);
+  $('.main-controls .play-pause').html(playerBarPauseButton);
 };
 
 var trackIndex = function(album, song) {
   return album.songs.indexOf(song);
 };
-
-var updatePlayerBarSong = function() {
-  $('.currently-playing .song-name').text(currentSongFromAlbum.title);
-  $('.currently-playing .artist-name').text(currentAlbum.artist);
-  $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
-  $('.main-controls .play-pause').html(playerBarPauseButton);
-};
-
 
 var nextSong = function() {
   var getLastSongNumber = function(index) {
@@ -122,9 +113,9 @@ var nextSong = function() {
   setSong(currentSongIndex + 1);
   currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
-  $('.currently-playing .song-name').text(currentSongFromAlbum.title);
+  $('.currently-playing .song-name').text(currentSongFromAlbum.name);
   $('.currently-playing .artist-name').text(currentAlbum.artist);
-  $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.title);
+  $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.name + " - " + currentAlbum.name);
   $('.main-controls .play-pause').html(playerBarPauseButton);
 
   var lastSongNumber = getLastSongNumber(currentSongIndex);
@@ -137,7 +128,6 @@ var nextSong = function() {
 
 
 var previousSong = function() {
-
   var getLastSongNumber = function(index) {
     return index == (currentAlbum.songs.length - 1) ? 1 : index + 2;
   };
@@ -151,6 +141,11 @@ var previousSong = function() {
 
   setSong(currentSongIndex + 1);
   currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
+
+  $('.currently-playing .song-name').text(currentSongFromAlbum.name);
+  $('.currently-playing .artist-name').text(currentAlbum.artist);
+  $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.name + " - " + currentAlbum.name);
+  $('.main-controls .play-pause').html(playerBarPauseButton);
 
   var lastSongNumber = getLastSongNumber(currentSongIndex);
   var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
@@ -173,7 +168,9 @@ var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
 $(document).ready(function() {
-  setCurrentAlbum(albumBenFolds);
+  // setCurrentAlbum(albumBenFolds);
+  setCurrentAlbum(albumPicasso);
+  // setCurrentAlbum(albumMarconi);
   $previousButton.click(previousSong);
   $nextButton.click(nextSong);
 });
