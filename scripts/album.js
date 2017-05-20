@@ -25,19 +25,18 @@ var createSongRow = function(songNumber, songName, songLength) {
       setSong(songNumber);
       currentSoundFile.play();
       $(this).html(pauseButtonTemplate);
-      setSong(songNumber);
       currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
       updatePlayerBarSong();
     }
     else if (currentlyPlayingSongNumber === songNumber) {
       if (currentSoundFile.isPaused()) {
-        $(this).html(playButtonTemplate);
-        $('.main-controls .play-pause').html(playerBarPlayButton);
+        $(this).html(pauseButtonTemplate);
+        $('.main-controls .play-pause').html(playerBarPauseButton);
         currentSoundFile.play();
       }
       else {
-        $(this).html(pauseButtonTemplate);
-        $('.main-controls .play-pause').html(playerBarPauseButton);
+        $(this).html(playButtonTemplate);
+        $('.main-controls .play-pause').html(playerBarPlayButton);
         currentSoundFile.pause();
       }
     }
@@ -67,12 +66,24 @@ var createSongRow = function(songNumber, songName, songLength) {
 };
 
 var setSong = function(songNumber) {
+  if (currentSoundFile) {
+    currentSoundFile.stop();
+  }
+
   currentlyPlayingSongNumber = parseInt(songNumber);
   currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
   currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
     formats: ['mp3'],
     preload: true
   });
+
+  setVolume(currentVolume);
+};
+
+var setVolume = function(volume) {
+  if (currentSoundFile) {
+    currentSoundFile.setVolume(volume);
+  }
 };
 
 var setCurrentAlbum = function(album) {
@@ -121,6 +132,7 @@ var nextSong = function() {
   }
 
   setSong(currentSongIndex + 1);
+  currentSoundFile.play();
   currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
   $('.currently-playing .song-name').text(currentSongFromAlbum.name);
@@ -150,6 +162,7 @@ var previousSong = function() {
   }
 
   setSong(currentSongIndex + 1);
+  currentSoundFile.play();
   currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
 
   $('.currently-playing .song-name').text(currentSongFromAlbum.name);
@@ -174,6 +187,7 @@ var currentAlbum = null;
 var currentlyPlayingSongNumber = null;
 var currentSongFromAlbum = null;
 var currentSoundFile = null;
+var currentVolume = 65;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
