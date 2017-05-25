@@ -5,11 +5,11 @@ var albumBenFolds = {
     year: '1997',
     albumArtUrl: 'assets/images/album_covers/04.png',
     songs: [
-      {name: 'Brick', length: '4:53'},
-      {name: 'Battle of Who Could Care Less', length: '3:16'},
-      {name: 'Kate', length: '3:13'},
-      {name: 'One Angry Dwarf And 200 Solemn Faces', length: '3:52'},
-      {name: 'Steven\'s Last Night In Town', length: '3:27'},
+      {name: 'Brick', length: '293.00'},
+      {name: 'Battle of Who Could Care Less', length: '196.00'},
+      {name: 'Kate', length: '193.00'},
+      {name: 'One Angry Dwarf And 200 Solemn Faces', length: '232.00'},
+      {name: 'Steven\'s Last Night In Town', length: '207.00'},
     ]
 };
 
@@ -18,13 +18,13 @@ var albumPicasso = {
     artist: 'Pablo Picasso',
     label: 'Cubism',
     year: '1881',
-    albumArtUrl: 'assets/images/album_covers/01.png',
+    albumArtUrl: 'assets/images/album_covers/Picasso-album_cover.jpg',
     songs: [
-        { name: 'Blue', length: '161.71', audioUrl: 'assets/music/blue'},
-        { name: 'Green', length: '103.96', audioUrl: 'assets/music/green'},
-        { name: 'Red', length: '268.45', audioUrl: 'assets/music/red'},
-        { name: 'Pink', length: '153.14', audioUrl: 'assets/music/pink'},
-        { name: 'Magenta', length: '374.22', audioUrl: 'assets/music/magenta'}
+        { name: 'Blue     | Bass Walker', length: '161.71', audioUrl: 'assets/music/blue'},
+        { name: 'Green    | Coriolan Overture Op.62', length: '483.00', audioUrl: 'assets/music/Green_CoriolanOvertureOp62(Beethoven)'},
+        { name: 'Red      | George St. Shuffle', length: '268.45', audioUrl: 'assets/music/red'},
+        { name: 'Pink     | In the Hall of the Mountain King (Peer Gynt)', length: '153.14', audioUrl: 'assets/music/pink'},
+        { name: 'Magenta  | String Impromptu No.1', length: '374.22', audioUrl: 'assets/music/magenta'}
     ]
 };
 
